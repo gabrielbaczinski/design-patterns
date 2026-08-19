@@ -8,19 +8,30 @@ O objetivo deste projeto é servir de base para o estudo prático de manutenibil
 
 ## 🎯 Objetivo da Atividade
 
-A classe `UsuarioPrinter` implementa uma funcionalidade completa e operacional: ela recebe uma lista de usuários e renderiza uma tabela formatada no console.
+Separar as classes de impressão de tabela em diferentes responsabilidades através do padrão de projetos **Adapter**.
 
-Apesar de o programa funcionar perfeitamente do ponto de vista funcional, a estrutura interna do código contém diversas fragilidades de design que impactam diretamente a sua evolução, legibilidade e facilidade de testes.
+* A interface `br.pucpr.table.TableData` representa os dados de uma tabela de forma genérica (cabeçalhos e linhas), independente do domínio de origem.
+* `UsuarioPrinter` e `PlanetasPrinter` não renderizam mais tabelas por conta própria: ambos delegam para uma única classe `br.pucpr.table.Table`, que sabe apenas desenhar uma tabela a partir de um `TableData`.
+* `UsuarioTableData` e `PlanetaTableData` são os **Adapters**: traduzem, respectivamente, `List<Usuario>` e `List<Planeta>` para o formato esperado por `TableData`.
+* A largura de cada coluna é definida pela largura do seu cabeçalho.
 
-Sua missão como aluno é analisar o código-fonte, identificar os pontos de melhoria estruturais e aplicar as refatorações necessárias para elevar a qualidade do projeto sem alterar a saída gerada no console.
+### Estrutura
 
----
+```
+src/br/pucpr/table/
+  TableData.java
+  Table.java
 
-## 📋 Proposta de Exercício
+src/br/pucpr/usuario/
+  Usuario.java
+  UsuarioTableData.java
+  UsuarioPrinter.java
 
-1. **Análise Crítica:** Esquadrinhe o método `print` e identifique as violações de boas práticas de programação e orientação a objetos.
-2. **Mapeamento:** Liste quais sintomas de código deteriorado (*Code Smells*) estão presentes e quais princípios de design foram violados.
-3. **Refatoração:** Aplique técnicas de refatoração para transformar o código em uma solução limpa, bem estruturada e fácil de manter.
+src/br/pucpr/planeta/
+  Planeta.java
+  PlanetaTableData.java
+  PlanetasPrinter.java
+```
 
 ---
 
@@ -31,6 +42,7 @@ Sua missão como aluno é analisar o código-fonte, identificar os pontos de mel
 ### Como Executar
 
 ```bash
-javac UsuarioPrinter.java
-java UsuarioPrinter
+javac -encoding UTF-8 -d out $(find src -name "*.java")
+java -cp out br.pucpr.usuario.UsuarioPrinter
+java -cp out br.pucpr.planeta.PlanetasPrinter
 ```
