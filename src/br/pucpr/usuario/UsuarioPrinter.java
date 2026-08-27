@@ -1,5 +1,7 @@
 package br.pucpr.usuario;
 
+import br.pucpr.table.ColumnData;
+import br.pucpr.table.ColumnTableData;
 import br.pucpr.table.Table;
 
 import java.util.List;
@@ -16,7 +18,14 @@ public class UsuarioPrinter {
             new Usuario(106L, "", "beatriz@email.com", "55566677788")
         );
 
-        var table = new Table(new UsuarioTableData(usuarios, true));
+        var columns = List.<ColumnData<? super Usuario>>of(
+            new IdColumn(),
+            new NomeColumn(),
+            new EmailColumn(),
+            new CpfColumn(true)
+        );
+
+        var table = new Table(new ColumnTableData<>(usuarios, columns));
         table.print(true, "LIGHT");
     }
 }

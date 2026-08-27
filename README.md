@@ -12,7 +12,8 @@ Separar as classes de impressão de tabela em diferentes responsabilidades atrav
 
 * A interface `br.pucpr.table.TableData` representa os dados de uma tabela de forma genérica (cabeçalhos e linhas), independente do domínio de origem.
 * `UsuarioPrinter` e `PlanetasPrinter` não renderizam mais tabelas por conta própria: ambos delegam para uma única classe `br.pucpr.table.Table`, que sabe apenas desenhar uma tabela a partir de um `TableData`.
-* `UsuarioTableData` e `PlanetaTableData` são os **Adapters**: traduzem, respectivamente, `List<Usuario>` e `List<Planeta>` para o formato esperado por `TableData`.
+* `PlanetaTableData` é o **Adapter** do planeta: traduz `List<Planeta>` para o formato esperado por `TableData`.
+* Pro usuário, a tabela foi quebrada em colunas: `ColumnData<T>` define uma coluna (cabeçalho + valor) e `ColumnTableData<T>` monta o `TableData` juntando a lista de usuários com a lista de colunas. Cada coluna (`IdColumn`, `NomeColumn`, `EmailColumn`, `CpfColumn`) fica isolada em `br.pucpr.usuario`, então dá pra mexer numa coluna sem afetar as outras.
 * A largura de cada coluna é definida pela largura do seu cabeçalho.
 
 ### Estrutura
@@ -20,11 +21,16 @@ Separar as classes de impressão de tabela em diferentes responsabilidades atrav
 ```
 src/br/pucpr/table/
   TableData.java
+  ColumnData.java
+  ColumnTableData.java
   Table.java
 
 src/br/pucpr/usuario/
   Usuario.java
-  UsuarioTableData.java
+  IdColumn.java
+  NomeColumn.java
+  EmailColumn.java
+  CpfColumn.java
   UsuarioPrinter.java
 
 src/br/pucpr/planeta/
