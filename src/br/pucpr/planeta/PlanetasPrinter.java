@@ -1,6 +1,6 @@
 package br.pucpr.planeta;
 
-import br.pucpr.table.Table;
+import br.pucpr.table.Paginator;
 
 import java.util.List;
 
@@ -19,7 +19,11 @@ public class PlanetasPrinter {
             new Planeta(9, "", null, -1.0, -1)
         );
 
-        var table = new Table(new PlanetaTableData(planetas));
-        table.print(false, "DARK");
+        var paginator = new Paginator(new PlanetaTableData(planetas), 4);
+        while (true) {
+            paginator.print(false, "DARK");
+            if (!paginator.hasNextPage()) break;
+            paginator.nextPage();
+        }
     }
 }

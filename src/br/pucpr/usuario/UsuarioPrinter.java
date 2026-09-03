@@ -2,7 +2,7 @@ package br.pucpr.usuario;
 
 import br.pucpr.table.ColumnData;
 import br.pucpr.table.ColumnTableData;
-import br.pucpr.table.Table;
+import br.pucpr.table.Paginator;
 
 import java.util.List;
 
@@ -25,7 +25,11 @@ public class UsuarioPrinter {
             new CpfColumn(true)
         );
 
-        var table = new Table(new ColumnTableData<>(usuarios, columns));
-        table.print(true, "LIGHT");
+        var paginator = new Paginator(new ColumnTableData<>(usuarios, columns), 3);
+        while (true) {
+            paginator.print(true, "LIGHT");
+            if (!paginator.hasNextPage()) break;
+            paginator.nextPage();
+        }
     }
 }
